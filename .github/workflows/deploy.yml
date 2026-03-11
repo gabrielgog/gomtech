@@ -1,0 +1,88 @@
+name: Deploy Gomtech BFF
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  deploy-dev:
+    name: Build & Deploy to Dev
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    environment: gomtech_secrets
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY_SECRET }}
+          aws-region: eu-west-2
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push image
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build --platform linux/amd64 -f Dockerfile -t $ECR_REGISTRY/gomtech-bff:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/gomtech-bff:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/gomtech-bff:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Deploy to App Runner (dev)
+        uses: awslabs/amazon-app-runner-deploy@main
+        with:
+          service: gomtech-bff-dev
+          image: ${{ steps.build-image.outputs.image }}
+          access-role-arn: arn:aws:iam::690050947904:role/service-role/AppRunnerECRAccessRole
+          region: eu-west-2
+          port: 8080
+          wait: true
+
+  deploy-prod:
+    name: Build & Deploy to Production
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: gomtech_secrets
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY_SECRET }}
+          aws-region: eu-west-2
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push image
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build --platform linux/amd64 -f Dockerfile -t $ECR_REGISTRY/gomtech-bff:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/gomtech-bff:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/gomtech-bff:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Deploy to App Runner (prod)
+        uses: awslabs/amazon-app-runner-deploy@main
+        with:
+          service: gomtech-bff-prod
+          image: ${{ steps.build-image.outputs.image }}
+          access-role-arn: arn:aws:iam::690050947904:role/service-role/AppRunnerECRAccessRole
+          region: eu-west-2
+          port: 8080
+          wait: true
