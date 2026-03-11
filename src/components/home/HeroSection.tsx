@@ -66,7 +66,7 @@ export default function HeroSection() {
         <div className="h-4 w-px bg-zinc-800" />
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold text-white">48h</span>
-          <span>Nigeria's Delivery</span>
+          <span>Nigeria&apos;s Delivery</span>
         </div>
       </div>
     </section>
