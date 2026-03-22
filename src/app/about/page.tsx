@@ -3,29 +3,29 @@ import { Separator } from '@/components/ui/separator';
 
 export const metadata = {
   title: 'About',
-  description: 'Learn more about Gomtech — Nigeria\'s premium phone and accessories store.',
+  description: 'The Tech You Trust. Quality technology, carefully curated. Authentic smartphones, tablets, and accessories from brands you trust.',
 };
 
 const VALUES = [
   {
     icon: Shield,
-    title: 'Authentic Products',
-    description: 'Every product we sell is 100% genuine, sourced directly from authorised distributors.',
+    title: 'Authenticity Guaranteed',
+    description: 'Every product is 100% genuine and sourced directly from authorized partners. No compromises on quality.',
   },
   {
     icon: Truck,
-    title: 'Fast Delivery',
-    description: 'Same-day delivery across Lagos Island. Nationwide shipping within 2–3 business days.',
+    title: 'Reliable Delivery',
+    description: 'Fast, secure shipping to your doorstep. Track your order every step of the way.',
   },
   {
     icon: CheckCircle,
-    title: 'Quality Guarantee',
-    description: 'Not satisfied? Return within 7 days for a full refund or exchange. No questions asked.',
+    title: 'Quality Promise',
+    description: 'Not satisfied? Full refund or exchange within 7 days. Complete peace of mind with every purchase.',
   },
   {
     icon: Clock,
-    title: 'Expert Support',
-    description: 'Our team of phone experts is available Monday–Saturday, 8am–8pm WAT to help you.',
+    title: 'Trusted Support',
+    description: 'Our team is ready to help. Expert advice on products and seamless assistance with your orders.',
   },
 ];
 
@@ -35,15 +35,13 @@ export default function AboutPage() {
       {/* Header */}
       <div className="mx-auto max-w-2xl text-center">
         <span className="text-xs font-semibold uppercase tracking-widest text-amber-500">
-          Our Story
+          About Us
         </span>
         <h1 className="mt-2 text-4xl font-bold text-white sm:text-5xl">
-          About Gomtech
+          The Tech You Trust
         </h1>
         <p className="mt-4 text-lg leading-relaxed text-zinc-400">
-          Founded in Lagos in 2020, Gomtech was built on a simple belief: every Nigerian deserves
-          access to the world&apos;s best smartphones at fair prices. Today, we&apos;re one of
-          Nigeria&apos;s most trusted premium phone retailers.
+          Gomtech delivers quality technology you can rely on. We curate authentic smartphones, tablets, laptops, and accessories from trusted brands. Every product is selected for excellence, authenticity, and value. We believe premium technology should be accessible, transparent, and trustworthy.
         </p>
       </div>
 
@@ -75,21 +73,10 @@ export default function AboutPage() {
         <div>
           <h2 className="text-2xl font-bold text-white">Get in Touch</h2>
           <p className="mt-3 text-zinc-400">
-            Have a question about a product? Need help with an order? Our team is here to help.
+            Questions about a product? Need help with an order? We are here to support you.
           </p>
 
           <ul className="mt-8 space-y-5">
-            <li className="flex items-start gap-4">
-              <div className="inline-flex rounded-lg bg-amber-500/10 p-2.5">
-                <MapPin className="h-5 w-5 text-amber-500" />
-              </div>
-              <div>
-                <p className="font-medium text-zinc-200">Visit Us</p>
-                <p className="mt-0.5 text-sm text-zinc-500">
-                    Dutse ultra modern market, Jigawa state, Nigeria
-                </p>
-              </div>
-            </li>
             <li className="flex items-start gap-4">
               <div className="inline-flex rounded-lg bg-amber-500/10 p-2.5">
                 <Phone className="h-5 w-5 text-amber-500" />
@@ -97,10 +84,10 @@ export default function AboutPage() {
               <div>
                 <p className="font-medium text-zinc-200">Call or WhatsApp</p>
                 <a
-                  href="tel:+2348012345678"
+                  href="tel:+23407066138808"
                   className="mt-0.5 text-sm text-zinc-500 hover:text-white transition-colors"
                 >
-                    +234 8124228217
+                    +23407066138808
                 </a>
               </div>
             </li>

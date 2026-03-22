@@ -1,17 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getProducts } from '@/lib/google-sheets';
-
-export const revalidate = 3600;
+import { getProducts, getProductsByCategory } from '@/lib/db/products';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const category = searchParams.get('category') as 'phones' | 'accessories' | null;
+  const category = searchParams.get('category') as 'phones' | 'tablets' | 'laptops' | 'smartwatches' | 'headphones' | 'chargers' | 'cases' | 'screen-protectors' | 'accessories' | null;
 
-  const products = await getProducts();
+  const products = category ? await getProductsByCategory(category) : await getProducts();
 
-  const filtered = category
-    ? products.filter((p) => p.category === category)
-    : products;
-
-  return NextResponse.json({ products: filtered, total: filtered.length });
+  return NextResponse.json({ products, total: products.length });
 }
