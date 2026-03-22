@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Dialog,
   DialogContent,
@@ -25,6 +26,7 @@ export default function LoginModal({
   onOpenChange,
   onRegisterClick,
 }: LoginModalProps) {
+  const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,6 +56,11 @@ export default function LoginModal({
       onOpenChange(false);
       setEmail('');
       setPassword('');
+
+      // Redirect admin users to dashboard
+      if (data.user.role === 'admin') {
+        router.push('/admin');
+      }
     } catch (error) {
       setError('An error occurred');
       console.error(error);
