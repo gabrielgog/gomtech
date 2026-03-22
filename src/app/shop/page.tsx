@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
-import { getProducts } from '@/lib/google-sheets';
+import { getProducts } from '@/lib/db/products';
 import ShopClient from '@/components/shop/ShopClient';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Shop',

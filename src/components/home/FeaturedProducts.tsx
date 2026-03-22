@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { getFeaturedProducts } from '@/lib/google-sheets';
+import { getFeaturedProducts } from '@/lib/db/products';
 import ProductCard from '@/components/shop/ProductCard';
 
 export default async function FeaturedProducts() {

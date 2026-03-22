@@ -27,7 +27,7 @@ function rowToProduct(row: string[]): Product {
     id: row[0] ?? '',
     name: row[1] ?? '',
     price: parseInt(row[2] ?? '0', 10),
-    category: (row[3] as 'phones' | 'accessories') ?? 'phones',
+    category: (row[3] as 'phones' | 'tablets' | 'laptops' | 'smartwatches' | 'headphones' | 'chargers' | 'cases' | 'screen-protectors' | 'accessories') ?? 'phones',
     description: row[4] ?? '',
     imageUrl: row[5] ?? '/placeholder-phone.jpg',
     stock: parseInt(row[6] ?? '0', 10),
@@ -69,7 +69,7 @@ export async function getFeaturedProducts(): Promise<Product[]> {
 }
 
 export async function getProductsByCategory(
-  category: 'phones' | 'accessories'
+  category: 'phones' | 'tablets' | 'laptops' | 'smartwatches' | 'headphones' | 'chargers' | 'cases' | 'screen-protectors' | 'accessories'
 ): Promise<Product[]> {
   const products = await getProducts();
   return products.filter((p) => p.category === category);

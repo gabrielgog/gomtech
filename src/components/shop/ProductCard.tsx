@@ -15,6 +15,8 @@ interface ProductCardProps {
 }
 
 function isPlaceholder(url: string) {
+  // Only treat local /placeholder paths as placeholders
+  // External URLs (including placeholder.com) should render normally
   return url.startsWith('/placeholder');
 }
 

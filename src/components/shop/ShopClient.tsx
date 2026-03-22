@@ -6,7 +6,7 @@ import { Product } from '@/types';
 import CategoryFilter from './CategoryFilter';
 import ProductGrid from './ProductGrid';
 
-type Category = 'all' | 'phones' | 'accessories';
+type Category = 'all' | 'phones' | 'tablets' | 'laptops' | 'smartwatches' | 'headphones' | 'chargers' | 'cases' | 'screen-protectors' | 'accessories';
 
 interface ShopClientProps {
   products: Product[];
@@ -19,7 +19,8 @@ export default function ShopClient({ products }: ShopClientProps) {
 
   useEffect(() => {
     const cat = searchParams.get('category') as Category;
-    if (cat && ['all', 'phones', 'accessories'].includes(cat)) {
+    const validCategories = ['all', 'phones', 'tablets', 'laptops', 'smartwatches', 'headphones', 'chargers', 'cases', 'screen-protectors', 'accessories'];
+    if (cat && validCategories.includes(cat)) {
       setSelected(cat);
     }
   }, [searchParams]);
@@ -30,6 +31,13 @@ export default function ShopClient({ products }: ShopClientProps) {
   const counts = {
     all: products.length,
     phones: products.filter((p) => p.category === 'phones').length,
+    tablets: products.filter((p) => p.category === 'tablets').length,
+    laptops: products.filter((p) => p.category === 'laptops').length,
+    smartwatches: products.filter((p) => p.category === 'smartwatches').length,
+    headphones: products.filter((p) => p.category === 'headphones').length,
+    chargers: products.filter((p) => p.category === 'chargers').length,
+    cases: products.filter((p) => p.category === 'cases').length,
+    'screen-protectors': products.filter((p) => p.category === 'screen-protectors').length,
     accessories: products.filter((p) => p.category === 'accessories').length,
   };
 

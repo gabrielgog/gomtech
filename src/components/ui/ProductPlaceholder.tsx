@@ -1,12 +1,23 @@
-import { Smartphone, Headphones } from 'lucide-react';
+import { Smartphone, Headphones, Laptop, Watch, Zap, Package } from 'lucide-react';
 
 interface ProductPlaceholderProps {
-  category: 'phones' | 'accessories';
+  category: 'phones' | 'tablets' | 'laptops' | 'smartwatches' | 'headphones' | 'chargers' | 'cases' | 'screen-protectors' | 'accessories';
   className?: string;
 }
 
 export default function ProductPlaceholder({ category, className = '' }: ProductPlaceholderProps) {
-  const Icon = category === 'phones' ? Smartphone : Headphones;
+  const categoryIcons: Record<typeof category, React.ComponentType<any>> = {
+    phones: Smartphone,
+    tablets: Smartphone,
+    laptops: Laptop,
+    smartwatches: Watch,
+    headphones: Headphones,
+    chargers: Zap,
+    cases: Package,
+    'screen-protectors': Package,
+    accessories: Package,
+  };
+  const Icon = categoryIcons[category] || Package;
 
   return (
     <div

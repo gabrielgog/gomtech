@@ -2,17 +2,24 @@
 
 import { cn } from '@/lib/utils';
 
-type Category = 'all' | 'phones' | 'accessories';
+type Category = 'all' | 'phones' | 'tablets' | 'laptops' | 'smartwatches' | 'headphones' | 'chargers' | 'cases' | 'screen-protectors' | 'accessories';
 
 interface CategoryFilterProps {
   selected: Category;
   onChange: (category: Category) => void;
-  counts: { all: number; phones: number; accessories: number };
+  counts: { all: number; phones: number; tablets: number; laptops: number; smartwatches: number; headphones: number; chargers: number; cases: number; 'screen-protectors': number; accessories: number };
 }
 
 const CATEGORIES: { value: Category; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'phones', label: 'Phones' },
+  { value: 'tablets', label: 'Tablets' },
+  { value: 'laptops', label: 'Laptops' },
+  { value: 'smartwatches', label: 'Smartwatches' },
+  { value: 'headphones', label: 'Headphones' },
+  { value: 'chargers', label: 'Chargers' },
+  { value: 'cases', label: 'Cases' },
+  { value: 'screen-protectors', label: 'Screen Protectors' },
   { value: 'accessories', label: 'Accessories' },
 ];
 

@@ -1,4 +1,4 @@
-import { getProducts } from '@/lib/google-sheets';
+import { getProducts } from '@/lib/db/products';
 import ProductCard from '@/components/shop/ProductCard';
 import { Product } from '@/types';
 
