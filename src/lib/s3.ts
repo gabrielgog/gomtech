@@ -4,24 +4,38 @@ import {
   DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
 
-const s3Client = new S3Client({
-  region: process.env.AWS_S3_REGION || 'eu-west-2',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-  },
-});
+function validateS3Config(): void {
+  const required = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_S3_BUCKET_NAME'];
+  const missing = required.filter(key => !process.env[key]);
+
+  if (missing.length > 0) {
+    throw new Error(`Missing AWS configuration: ${missing.join(', ')}`);
+  }
+}
+
+let s3Client: S3Client | null = null;
+
+function getS3Client(): S3Client {
+  if (!s3Client) {
+    validateS3Config();
+    s3Client = new S3Client({
+      region: process.env.AWS_S3_REGION || 'eu-west-2',
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+      },
+    });
+  }
+  return s3Client;
+}
 
 export async function uploadToS3(
   file: File,
   folder: string = 'products'
 ): Promise<string> {
-  const bucket = process.env.AWS_S3_BUCKET_NAME;
+  validateS3Config();
 
-  if (!bucket) {
-    throw new Error('AWS_S3_BUCKET_NAME is not set');
-  }
-
+  const bucket = process.env.AWS_S3_BUCKET_NAME!;
   const timestamp = Date.now();
   const randomString = Math.random().toString(36).substring(7);
   const fileName = `${folder}/${timestamp}-${randomString}-${file.name}`;
@@ -36,7 +50,7 @@ export async function uploadToS3(
   });
 
   try {
-    await s3Client.send(command);
+    await getS3Client().send(command);
 
     // Return the public S3 URL
     const region = process.env.AWS_S3_REGION || 'eu-west-2';
@@ -49,11 +63,9 @@ export async function uploadToS3(
 }
 
 export async function deleteFromS3(imageUrl: string): Promise<void> {
-  const bucket = process.env.AWS_S3_BUCKET_NAME;
+  validateS3Config();
 
-  if (!bucket) {
-    throw new Error('AWS_S3_BUCKET_NAME is not set');
-  }
+  const bucket = process.env.AWS_S3_BUCKET_NAME!;
 
   try {
     // Extract key from URL
@@ -73,7 +85,7 @@ export async function deleteFromS3(imageUrl: string): Promise<void> {
       Key: key,
     });
 
-    await s3Client.send(command);
+    await getS3Client().send(command);
   } catch (error) {
     console.error('S3 delete error:', error);
     // Don't throw, just log - deletion failure shouldn't block operations
