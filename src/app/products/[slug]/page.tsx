@@ -2,21 +2,16 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import { getProductBySlug, getProducts } from '@/lib/google-sheets';
+import { getProductBySlug } from '@/lib/db/products';
 import ProductImages from '@/components/product/ProductImages';
 import ProductInfo from '@/components/product/ProductInfo';
 import RelatedProducts from '@/components/product/RelatedProducts';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: { slug: string };
-}
-
-export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps) {

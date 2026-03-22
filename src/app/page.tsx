@@ -4,7 +4,7 @@ import FeaturedProducts from '@/components/home/FeaturedProducts';
 import CategoryBanner from '@/components/home/CategoryBanner';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 function FeaturedSkeleton() {
   return (

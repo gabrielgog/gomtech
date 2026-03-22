@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
@@ -16,6 +17,7 @@ import { useCartStore } from '@/lib/store';
 import { formatPrice } from '@/lib/utils';
 
 export default function CartDrawer() {
+  const router = useRouter();
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice, clearCart } =
     useCartStore();
 
@@ -120,7 +122,13 @@ export default function CartDrawer() {
                 <span className="font-semibold text-white">{formatPrice(total)}</span>
               </div>
               <p className="text-xs text-zinc-500">Shipping and taxes calculated at checkout.</p>
-              <Button className="w-full bg-amber-500 text-zinc-950 hover:bg-amber-400 font-semibold">
+              <Button
+                onClick={() => {
+                  closeCart();
+                  router.push('/checkout');
+                }}
+                className="w-full bg-amber-500 text-zinc-950 hover:bg-amber-400 font-semibold"
+              >
                 Checkout
               </Button>
               <Button
