@@ -4,25 +4,23 @@ import {
   DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
 
-function validateS3Config(): void {
-  const required = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_S3_BUCKET_NAME'];
-  const missing = required.filter(key => !process.env[key]);
-
-  if (missing.length > 0) {
-    throw new Error(`Missing AWS configuration: ${missing.join(', ')}`);
-  }
-}
-
 let s3Client: S3Client | null = null;
 
 function getS3Client(): S3Client {
   if (!s3Client) {
-    validateS3Config();
+    const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+    const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+    const region = process.env.AWS_S3_REGION || 'eu-west-2';
+
+    if (!accessKeyId || !secretAccessKey) {
+      throw new Error('Missing AWS credentials: AWS_ACCESS_KEY_ID and/or AWS_SECRET_ACCESS_KEY');
+    }
+
     s3Client = new S3Client({
-      region: process.env.AWS_S3_REGION || 'eu-west-2',
+      region,
       credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+        accessKeyId,
+        secretAccessKey,
       },
     });
   }
@@ -33,9 +31,10 @@ export async function uploadToS3(
   file: File,
   folder: string = 'products'
 ): Promise<string> {
-  validateS3Config();
-
-  const bucket = process.env.AWS_S3_BUCKET_NAME!;
+  const bucket = process.env.AWS_S3_BUCKET_NAME || 'gomtech-products';
+  if (!bucket) {
+    throw new Error('AWS_S3_BUCKET_NAME is not configured');
+  }
   const timestamp = Date.now();
   const randomString = Math.random().toString(36).substring(7);
   const fileName = `${folder}/${timestamp}-${randomString}-${file.name}`;
@@ -63,9 +62,10 @@ export async function uploadToS3(
 }
 
 export async function deleteFromS3(imageUrl: string): Promise<void> {
-  validateS3Config();
-
-  const bucket = process.env.AWS_S3_BUCKET_NAME!;
+  const bucket = process.env.AWS_S3_BUCKET_NAME || 'gomtech-products';
+  if (!bucket) {
+    throw new Error('AWS_S3_BUCKET_NAME is not configured');
+  }
 
   try {
     // Extract key from URL
